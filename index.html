@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NeonForge — Cyber Gadgets</title>
+  <meta name="description" content="NeonForge — curated cyber gadgets, wearables, drones & accessories. Futuristic neon storefront demo.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+  <style>
+    /* ==========================
+       NeonForge — Cyberpunk Theme
+       ========================== */
+    :root{
+      --bg-0: #04060a;
+      --bg-1: #071021;
+      --panel: rgba(255,255,255,0.03);
+      --muted: #9aa3b2;
+      --neon-cyan: #00f0ff;
+      --neon-pink: #ff3cac;
+      --neon-lime: #7cff5f;
+      --card-grad: linear-gradient(135deg, rgba(0,240,255,0.08), rgba(255,60,172,0.06));
+      --glass: rgba(255,255,255,0.02);
+      --glass-strong: rgba(255,255,255,0.04);
+      --shadow: 0 20px 50px rgba(2,6,12,0.7);
+      --text: #e6eef8;
+      --accent: var(--neon-cyan);
+      --radius: 12px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:
+        radial-gradient(800px 600px at 10% 10%, rgba(0,240,255,0.03), transparent 8%),
+        radial-gradient(900px 700px at 90% 80%, rgba(255,60,172,0.02), transparent 12%),
+        linear-gradient(180deg, var(--bg-0) 0%, var(--bg-1) 100%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* Header */
+    header{
+      position: sticky; top:0; z-index:120;
+      display:flex;align-items:center;justify-content:space-between;
+      gap:18px;padding:18px 28px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(0,0,0,0.05));
+      border-bottom: 1px solid rgba(255,255,255,0.02);
+      backdrop-filter: blur(6px);
+    }
+    .brand{display:flex;align-items:center;gap:14px}
+    .logo{
+      width:56px;height:56px;border-radius:10px;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink));
+      display:flex;align-items:center;justify-content:center;font-family:"Orbitron",sans-serif;font-weight:800;
+      color:#021018;font-size:20px;box-shadow: 0 8px 28px rgba(0,240,255,0.06);
+    }
+    .title {line-height:1}
+    .title h1{margin:0;font-size:18px;letter-spacing:0.6px}
+    .title p{margin:4px 0 0;font-size:12px;color:var(--muted)}
+
+    nav{display:flex;gap:14px;align-items:center}
+    nav a{
+      color:var(--muted);text-decoration:none;font-weight:600;font-size:13px;padding:8px;border-radius:8px;
+    }
+    nav a:hover{color:var(--text);background:linear-gradient(90deg, rgba(0,240,255,0.04), rgba(255,60,172,0.02))}
+
+    /* Main layout */
+    main{max-width:1200px;margin:28px auto;padding:0 20px 160px}
+
+    /* Hero */
+    .hero{
+      display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:center;margin-bottom:30px;
+    }
+    .hero-card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.008));
+      border-radius:var(--radius);padding:28px;border:1px solid var(--glass-strong);box-shadow:var(--shadow);
+    }
+    .hero h2{margin:0;font-size:34px;color:var(--neon-cyan);text-shadow:0 6px 24px rgba(0,240,255,0.06)}
+    .hero p{color:var(--muted);margin-top:12px;line-height:1.5}
+
+    .cta-row{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap}
+    .btn{
+      border:none;padding:12px 16px;border-radius:10px;font-weight:800;cursor:pointer;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+      color:#021018; box-shadow: 0 12px 30px rgba(0,240,255,0.06);
+    }
+    .btn.ghost{
+      background:transparent;border:1px solid rgba(255,255,255,0.03);color:var(--muted)
+    }
+
+    /* Sidebar featured */
+    .featured{
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.006));
+      border-radius:12px;padding:14px;border:1px solid var(--glass-strong);
+      display:flex;flex-direction:column;gap:12px;align-items:center;
+    }
+    .featured img{width:100%;border-radius:10px;display:block;object-fit:cover;height:200px}
+    .featured h4{margin:0;color:var(--neon-pink)}
+
+    /* Products */
+    .section-title{color:var(--neon-cyan);margin:16px 0 8px;font-weight:700}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;margin-top:12px}
+    .card{
+      border-radius:14px;padding:12px;background:var(--panel);border:1px solid var(--glass-strong);
+      box-shadow: 0 8px 30px rgba(2,6,12,0.6);
+      display:flex;flex-direction:column;gap:12px;transition:transform .22s ease, box-shadow .22s ease;
+      position:relative;overflow:hidden;
+    }
+    .card::after{
+      content:"";position:absolute;inset:0;background:var(--card-grad);opacity:0;transition:opacity .22s ease;
+      pointer-events:none;
+    }
+    .card:hover{transform:translateY(-8px);box-shadow:0 30px 60px rgba(0,0,0,0.6)}
+    .card:hover::after{opacity:1}
+    .prod-img{height:160px;border-radius:10px;overflow:hidden;background:#050608;display:flex;align-items:center;justify-content:center}
+    .prod-img img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1);transition:transform .35s ease}
+    .card:hover .prod-img img{transform:scale(1.06)}
+    .tag-pill{font-size:12px;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.03);color:var(--muted);display:inline-block}
+
+    .prod-title{font-weight:800;color:var(--text);font-size:15px}
+    .prod-desc{color:var(--muted);font-size:13px}
+    .price{font-weight:900;color:var(--neon-lime)}
+
+    .card-controls{display:flex;gap:8px;align-items:center;margin-top:auto}
+    .add{
+      flex:1;padding:10px;border-radius:10px;border:none;cursor:pointer;font-weight:800;
+      background: linear-gradient(90deg,var(--neon-pink),var(--neon-cyan));color:#021018;
+      box-shadow:0 12px 28px rgba(0,240,255,0.06);
+    }
+    .ghost{
+      padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--muted);cursor:pointer;
+    }
+
+    /* FAB cart */
+    .fab{
+      position:fixed;right:22px;bottom:22px;z-index:200;
+      display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,var(--neon-pink),var(--neon-cyan));
+      padding:12px 16px;border-radius:999px;color:#021018;font-weight:900;box-shadow:0 20px 60px rgba(0,0,0,0.6);cursor:pointer;
+    }
+    .fab .count{background:rgba(0,0,0,0.9);color:var(--neon-lime);padding:6px 8px;border-radius:999px;font-weight:900;margin-left:8px}
+
+    /* Modal */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:300}
+    .modal{
+      width:920px;max-width:96%;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.03);box-shadow:var(--shadow);color:var(--text);
+      max-height:86vh;overflow:auto;
+    }
+    .modal h3{margin:6px 0 12px;color:var(--neon-cyan)}
+    .cart-row{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px;border-radius:10px;background:rgba(255,255,255,0.01)}
+    .cart-row .left{display:flex;gap:12px;align-items:center}
+    .qty{background:rgba(255,255,255,0.02);padding:6px 8px;border-radius:8px;font-weight:700;color:var(--text)}
+
+    .checkout{margin-top:16px;border-top:1px dashed rgba(255,255,255,0.03);padding-top:14px;display:grid;grid-template-columns:1fr 360px;gap:16px}
+    .field{display:flex;flex-direction:column;gap:6px;margin-bottom:6px}
+    label{font-size:13px;color:var(--muted)}
+    input, select, textarea{padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:rgba(0,0,0,0.2);color:var(--text)}
+    .pay-box{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:12px;border-radius:10px}
+    .finish{width:100%;padding:12px;border-radius:10px;border:none;background:linear-gradient(90deg,var(--neon-cyan),var(--neon-pink));color:#021018;font-weight:900;cursor:pointer}
+
+    footer{max-width:1200px;margin:40px auto 90px;padding:0 20px;color:var(--muted);font-size:13px}
+    @media(max-width:980px){
+      .hero{grid-template-columns:1fr;gap:18px}
+      .grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+      .checkout{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="logo">NF</div>
+    <div class="title">
+      <h1>NeonForge</h1>
+      <p>Cyber gadgets · curated</p>
+    </div>
+  </div>
+
+  <nav aria-label="Main navigation">
+    <a href="#shop">Shop</a>
+    <a href="#featured">Featured</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" aria-labelledby="hero-heading">
+    <div class="hero-card">
+      <h2 id="hero-heading">Future-Ready Gear — Neon Forged</h2>
+      <p>Hand-picked smart devices, wearables, and drones with premium performance and neon-pulse design. Shop curated tech that's a step ahead.</p>
+
+      <div class="cta-row">
+        <button class="btn" onclick="scrollToShop()">Explore Gadgets</button>
+        <button class="btn ghost" onclick="scrollToFeatured()">See Featured</button>
+      </div>
+
+      <div style="margin-top:18px;color:var(--muted);font-size:13px">
+        Free shipping over $100 · 30-day returns · 2-year limited warranty
+      </div>
+    </div>
+
+    <aside id="featured" class="featured" aria-labelledby="featured-heading">
+      <h4 id="featured-heading">Featured — Horizon Drone X</h4>
+      <img src="https://images.pexels.com/photos/3707996/pexels-photo-3707996.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800&dpr=1" alt="Horizon Drone X">
+      <p style="color:var(--muted);text-align:center">Compact, 4K stabilized camera drone with adaptive flight modes and neon trim.</p>
+      <div style="display:flex;gap:10px">
+        <button class="btn" onclick="addToCart('drone-x')">Add Drone X</button>
+        <button class="btn ghost" onclick="openCart()">View Cart <span id="miniCount" class="qty">0</span></button>
+      </div>
+    </aside>
+  </section>
+
+  <section id="shop">
+    <h3 class="section-title">New Arrivals</h3>
+    <div class="grid" id="productGrid" aria-live="polite">
+      <!-- product cards injected by JS -->
+    </div>
+  </section>
+
+  <section id="about" style="margin-top:26px">
+    <h3 style="color:var(--neon-cyan)">About NeonForge</h3>
+    <p style="color:var(--muted);line-height:1.6">NeonForge curates cutting-edge hardware for creators, gamers, and makers. We test for performance, durability, and design — then select gear with the best neon soul.</p>
+  </section>
+
+  <section id="contact" style="margin-top:26px">
+    <h3 style="color:var(--neon-cyan)">Contact</h3>
+    <p style="color:var(--muted)">Email: <a href="mailto:support@neonforge.dev" style="color:var(--neon-cyan)">support@neonforge.dev</a></p>
+    <p style="color:var(--muted)">Follow: <span style="color:var(--muted)">@neonforge</span></p>
+  </section>
+
+</main>
+
+<!-- Floating cart FAB -->
+<button class="fab" onclick="openCart()" aria-label="Open cart">
+  CART <span class="count" id="cartCount">0</span>
+</button>
+
+<!-- modal root -->
+<div id="modalRoot" style="display:none" aria-live="polite"></div>
+
+<footer>
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+    <div>© 2025 NeonForge · Built for the future</div>
+    <div style="color:var(--muted)">Support · Warranty · Privacy</div>
+  </div>
+</footer>
+
+<script>
+/* =======================
+   NeonForge — Data + Logic
+   ======================= */
+
+/* Sample product list with images (free stock images used for demo) */
+const PRODUCTS = [
+  { id:'drone-x', name:'Horizon Drone X', price:399.00, desc:'4K stabilized camera drone, adaptive flight.', img:'https://images.pexels.com/photos/3707996/pexels-photo-3707996.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800&dpr=1', tag:'drone' },
+  { id:'aurora-hd', name:'Aurora HD Headset', price:149.00, desc:'Spatial audio, noise-cancel mic, RGB accents.', img:'https://images.pexels.com/photos/3747775/pexels-photo-3747775.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800&dpr=1', tag:'audio' },
+  { id:'flux-watch', name:'Flux Smartwatch', price:199.00, desc:'Biometric sensors, ultra-bright OLED', img:'https://images.pexels.com/photos/227294/pexels-photo-227294.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800&dpr=1', tag:'wearable' },
+  { id:'neon-pad', name:'NeonPad Mechanical', price:129.00, desc:'Tactile switches, per-key neon backlight.', img:'https://images.pexels.com/photos/3861972/pexels-photo-3861972.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800&dpr=1', tag:'keyboard' },
+  { id:'lumen-cam', name:'Lumen Camera', price:549.00, desc:'Mirrorless with fast AF & neon mode.', img:'https://images.pexels.com/photos/274973/pexels-photo-274973.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800&dpr=1', tag:'camera' },
+  { id:'sparq-speaker', name:'Sparq Portable', price:89.00, desc:'Punchy bass, neon LED visualization.', img:'https://images.pexels.com/photos/63703/pexels-photo-63703.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800&dpr=1', tag:'audio' }
+];
+
+const productGrid = document.getElementById('productGrid');
+const cartCountEl = document.getElementById('cartCount');
+const miniCountEl = document.getElementById('miniCount');
+
+function renderProducts(){
+  productGrid.innerHTML = '';
+  PRODUCTS.forEach(p=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="prod-img"><img src="${p.img}" alt="${p.name}"></div>
+      <div class="tag-pill">${p.tag.toUpperCase()}</div>
+      <div class="prod-title">${p.name}</div>
+      <div class="prod-desc">${p.desc}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div class="price">$${p.price.toFixed(2)}</div>
+      </div>
+      <div class="card-controls">
+        <button class="add" onclick="addToCart('${p.id}')">Add to Cart</button>
+        <button class="ghost" onclick="viewDetails('${p.id}')">Details</button>
+      </div>
+    `;
+    productGrid.appendChild(card);
+  });
+}
+renderProducts();
+
+/* Cart using localStorage */
+const CART_KEY = 'neonforge_cart_v1';
+function loadCart(){ try{return JSON.parse(localStorage.getItem(CART_KEY) || '{}')}catch(e){return {}} }
+function saveCart(cart){ localStorage.setItem(CART_KEY, JSON.stringify(cart)); updateCartUI(); }
+function updateCartUI(){
+  const cart = loadCart();
+  const total = Object.values(cart).reduce((s,i)=>s + i.qty, 0);
+  cartCountEl.innerText = total;
+  if(miniCountEl) miniCountEl.innerText = total;
+}
+function addToCart(id, qty=1){
+  const p = PRODUCTS.find(x=>x.id===id);
+  if(!p) return;
+  const cart = loadCart();
+  if(!cart[id]) cart[id] = {...p, qty:0};
+  cart[id].qty += qty;
+  saveCart(cart);
+  // visual pulse
+  document.querySelector('.fab')?.animate([{transform:'scale(1)'},{transform:'scale(1.06)'},{transform:'scale(1)'}],{duration:220});
+}
+function clearCart(){ localStorage.removeItem(CART_KEY); updateCartUI(); alert('Cart cleared (demo).') }
+updateCartUI();
+
+/* Cart modal / checkout */
+function openCart(){
+  const cart = loadCart(); const items = Object.values(cart);
+  const root = document.getElementById('modalRoot'); root.innerHTML=''; root.style.display='block';
+  const backdrop = document.createElement('div'); backdrop.className='modal-backdrop';
+  const modal = document.createElement('div'); modal.className='modal';
+
+  const subtotal = items.reduce((s,i)=>s + i.qty * i.price,0);
+
+  modal.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h3>Your Cart</h3>
+      <div><button class="btn ghost" onclick="closeModal()">Close</button></div>
+    </div>
+    <div id="cartList"></div>
+    <div class="checkout" id="checkoutArea">
+      <div>
+        <div class="field"><label>Name</label><input id="c_name" placeholder="Name for pickup/ship"></div>
+        <div class="field"><label>Email</label><input id="c_email" placeholder="you@domain.com"></div>
+        <div class="field"><label>Notes</label><textarea id="c_notes" rows="3" placeholder="Gift note / instructions"></textarea></div>
+      </div>
+      <aside class="pay-box">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div><div style="font-size:13px;color:var(--muted)">Subtotal</div><div style="font-weight:800;font-size:18px">$${subtotal.toFixed(2)}</div></div>
+          <div style="text-align:right"><div style="font-size:13px;color:var(--muted)">Tax</div><div style="font-weight:700">$${(subtotal*0.08).toFixed(2)}</div></div>
+        </div>
+        <div style="margin-top:12px;color:var(--muted)">Payment (demo)</div>
+        <div style="margin-top:10px"><label><input type="radio" name="pay" checked> Card (demo)</label></div>
+        <div style="margin-top:12px"><button class="finish" onclick="placeOrder()">Place Order (Demo)</button></div>
+      </aside>
+    </div>
+  `;
+
+  backdrop.appendChild(modal); root.appendChild(backdrop);
+
+  const cartList = modal.querySelector('#cartList');
+  if(items.length===0){
+    cartList.innerHTML = '<div style="padding:18px;color:var(--muted)">Your cart is empty — add some neon gear.</div>';
+    modal.querySelector('#checkoutArea').style.display='none';
+  } else {
+    items.forEach(it=>{
+      const row = document.createElement('div'); row.className='cart-row';
+      row.innerHTML = `
+        <div class="left">
+          <div style="width:72px;height:72px;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.02)"><img src="${it.img}" style="width:100%;height:100%;object-fit:cover"></div>
+          <div>
+            <div style="font-weight:800">${it.name}</div>
+            <div style="font-size:13px;color:var(--muted)">${it.qty} × $${it.price.toFixed(2)}</div>
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-weight:800">$${(it.qty*it.price).toFixed(2)}</div>
+          <div style="margin-top:8px;display:flex;gap:8px;justify-content:flex-end">
+            <button class="btn ghost" onclick="changeQty('${it.id}', -1)">−</button>
+            <div class="qty">${it.qty}</div>
+            <button class="btn" onclick="changeQty('${it.id}', 1)">+</button>
+            <button class="btn ghost" style="margin-left:8px" onclick="removeItem('${it.id}')">Remove</button>
+          </div>
+        </div>
+      `;
+      cartList.appendChild(row);
+    });
+  }
+
+  window._neon_modal = { root, modal, backdrop };
+}
+
+function closeModal(){ const root=document.getElementById('modalRoot'); root.style.display='none'; root.innerHTML=''; }
+
+function changeQty(id, delta){
+  const cart = loadCart(); if(!cart[id]) return; cart[id].qty += delta; if(cart[id].qty<=0) delete cart[id]; saveCart(cart); openCart();
+}
+function removeItem(id){ const cart = loadCart(); if(cart[id]) delete cart[id]; saveCart(cart); openCart(); }
+
+function placeOrder(){
+  const modalObj = window._neon_modal; if(!modalObj) return;
+  const modal = modalObj.modal;
+  const name = modal.querySelector('#c_name').value.trim();
+  const email = modal.querySelector('#c_email').value.trim();
+  if(!name || !email){ alert('Please provide name and email to place demo order.'); return; }
+
+  const btn = modal.querySelector('.finish'); btn.disabled=true; btn.innerText='Processing...';
+  setTimeout(()=>{
+    const tx = 'NF-' + Math.random().toString(36).slice(2,9).toUpperCase();
+    const cart = loadCart(); const items = Object.values(cart);
+    const subtotal = items.reduce((s,i)=>s + i.qty * i.price,0);
+    const tax = subtotal * 0.08; const total = subtotal + tax;
+    modal.querySelector('#cartList').innerHTML = `
+      <div style="padding:14px;border-radius:10px;background:linear-gradient(180deg, rgba(0,240,255,0.06), rgba(255,60,172,0.03));border:1px solid rgba(255,255,255,0.02);font-weight:800;color:var(--neon-cyan)">Order confirmed — Thanks, ${name}!</div>
+      <div style="margin-top:12px">
+        <strong>Order ID:</strong> ${tx}<br>
+        <strong>Total:</strong> $${total.toFixed(2)}<br>
+        <small style="color:var(--muted)">Demo receipt printed to console.</small>
+      </div>`;
+    modal.querySelector('#checkoutArea').innerHTML = `<div style="margin-top:12px"><button class="finish" onclick="closeModal()">Done</button></div>`;
+    localStorage.removeItem(CART_KEY); updateCartUI();
+    console.log('NeonForge Demo Order', { id: tx, name, email, items, total });
+    btn.disabled=false; btn.innerText='Place Order (Demo)';
+  },1400);
+}
+
+/* small helpers */
+function viewDetails(id){ const p = PRODUCTS.find(x=>x.id===id); if(!p) return alert(`${p.name}\n\n${p.desc}\n\n$${p.price.toFixed(2)}`) }
+function scrollToShop(){ document.getElementById('shop').scrollIntoView({behavior:'smooth'}) }
+function scrollToFeatured(){ document.getElementById('featured').scrollIntoView({behavior:'smooth'}) }
+
+/* storage event sync & init */
+window.addEventListener('storage', ()=>updateCartUI());
+renderProducts(); updateCartUI();
+</script>
+
+</body>
+</html>
